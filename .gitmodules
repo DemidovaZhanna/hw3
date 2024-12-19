@@ -1,0 +1,3 @@
+[submodule "third_party/minisat"]
+	path = third_party/minisat
+	url = git@github.com:master-keying/minisat.git
