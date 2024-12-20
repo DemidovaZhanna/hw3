@@ -4,8 +4,7 @@ int main()
 {
     TestRunner runner;
     runner.RunTest(test3SAT, "test3SAT");
-
-    testCombined3SAT();
+    runner.RunTest(testCombined3SAT, "testCombined3SAT");
 
     return 0;
 }

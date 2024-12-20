@@ -65,7 +65,7 @@ auto measureExecutionTime(Func&& func, Args&&... args)
 
 inline void test3SAT()
 {
-    std::cout << "The formula has solution:" << std::endl;
+    std::cout << "The formula from test3SAT has solution:" << std::endl;
     Formula formula = {
         {1, -2, 3},   // x1 ∨ !x2 ∨ x3
         {-1, 2, 4}    // !x1 ∨ x2 ∨ x4
@@ -78,7 +78,7 @@ inline void test3SAT()
     measureExecutionTime(solve3SAT, solver, formula, numVariables, assignment);
     AssertEqual(checkFormula(assignment, formula), 1, "3SAT: Formula is true");
 
-    std::cout << "The formula has no solution:" << std::endl;
+    std::cout << "The formula from test3SAT has no solution:" << std::endl;
     Formula formulaNOT = {
         {1, 2},     // x1 ∨ x2
         {-1, 2},    // !x1 ∨ x2
@@ -94,26 +94,31 @@ inline void test3SAT()
 
 inline void testCombined3SAT()
 {
-    int numVariables = 5;
-    int numClauses = 10;
-    Formula formula = generateRandom3SAT(numVariables, numClauses);
+    std::cout << "The formula from testCombined3SAT has solution:" << std::endl;
+    Formula formula = {
+        {1, -2, 3},   // x1 ∨ !x2 ∨ x3
+        {-1, 2, 4}    // !x1 ∨ x2 ∨ x4
+    };
 
-    std::cout << "Generated 3-SAT formula:" << std::endl;
-    for (const auto& clause : formula) {
-        for (int var : clause) {
-            std::cout << var << " ";
-        }
-        std::cout << std::endl;
-    }
-
+    int numVariables = 4;
+    Minisat::Solver solver;
     std::vector<int> assignment(numVariables);
-    bool solved = solve3SATCombined(formula, numVariables, assignment);
+
+    measureExecutionTime(solve3SATCombined, formula, numVariables, assignment);
+    AssertEqual(checkFormula(assignment, formula), 1, "testCombined3SAT: Formula is true");
+
+    int numVariablesGen = 5;
+    int numClausesGen = 10;
+    Formula formulaGen = generateRandom3SAT(numVariablesGen, numClausesGen);
+
+    std::vector<int> assignmentGen(numVariablesGen);
+    bool solved = solve3SATCombined(formulaGen, numVariablesGen, assignmentGen);
 
     if (solved) {
-        std::cout << "The formula is satisfiable with the following assignment:" << std::endl;
-        for (int i = 0; i < numVariables; ++i) {
-            std::cout << "x" << i + 1 << " = " << (assignment[i] == 1 ? "True" : "False") << std::endl;
-        }
+        std::cout << "The formula is satisfiable with the following assignment." << std::endl;
+        // for (int i = 0; i < numVariablesGen; ++i) {
+        //     std::cout << "x" << i + 1 << " = " << (assignmentGen[i] == 1 ? "True" : "False") << std::endl;
+        // }
     } else {
         std::cout << "The formula is not satisfiable." << std::endl;
     }
