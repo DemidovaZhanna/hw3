@@ -1,15 +1,12 @@
-#include <iostream>
-#include "3SAT.h"
+#include "test.h"
 
 int main()
 {
-    SetCoverProblem problem;
+    TestRunner runner;
+    runner.RunTest(test3SAT, "test3SAT");
 
-    problem.universe = {1, 2, 3};
-    problem.subsets = {{1, 2}, {2, 3}, {1, 3}};
-    problem.costs = {2, 3, 1};
+    testCombined3SAT();
 
-    solveSetCover(problem);
     return 0;
 }
 
